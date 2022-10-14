@@ -1,0 +1,16 @@
+# /etc/rancher/k3s/registries.yaml
+
+- name: "Create /etc/rancher/"
+  file:
+    path: /etc/rancher/
+    state: directory
+
+- name: "Create /etc/rancher/k3s/"
+  file:
+    path: /etc/rancher/k3s/
+    state: directory
+
+- name: "Configure /etc/rancher/k3s/registries.yaml"
+  template:
+    dest: /etc/rancher/k3s/registries.yaml
+    src: etc/rancher/k3s/registries.yaml.j2

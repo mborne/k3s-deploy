@@ -1,0 +1,2 @@
+k3s_url: 'https://vagrantbox-1:6443'
+k3s_installer_opts: '--flannel-iface=enp0s8'

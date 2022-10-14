@@ -1,0 +1,12 @@
+[all]
+vagrantbox-1 ansible_ssh_host=192.168.50.201
+vagrantbox-2 ansible_ssh_host=192.168.50.202
+vagrantbox-3 ansible_ssh_host=192.168.50.203
+
+[k3s_master]
+vagrantbox-1
+
+[k3s_agent]
+vagrantbox-[2:3]
+
+

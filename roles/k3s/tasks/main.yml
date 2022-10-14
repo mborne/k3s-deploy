@@ -1,0 +1,20 @@
+---
+
+- name: "Install K3S requirements"
+  include_tasks: install-requirements.yml
+
+- name: "Configure /etc/rancher/k3s/registries.yaml"
+  include_tasks: configure-registries.yml
+  when: k3s_docker_mirror | default('', true) | trim != ''
+
+- name: "Install K3S as a master node"
+  include_tasks: install-master.yml
+  when: k3s_mode == 'server'
+
+- name: "Install K3S as a agent node"
+  include_tasks: install-agent.yml
+  when: k3s_mode == 'agent'
+
+- name: "Fetch K3S config from master node"
+  include_tasks: fetch-config.yml
+  when: k3s_mode == 'server'

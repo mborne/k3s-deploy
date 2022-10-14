@@ -1,0 +1,3 @@
+---
+- import_playbook: k3s-master.yml
+- import_playbook: k3s-agent.yml

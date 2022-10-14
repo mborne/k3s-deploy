@@ -1,0 +1,16 @@
+- name: "Read token from .k3s/node-token"
+  set_fact:
+    k3s_token: "{{ lookup('file', '{{ playbook_dir }}/.k3s/node-token') }}"
+
+- name: "Display k3s_url and k3s_installer_opts"
+  debug:
+    msg: "k3s_url : {{ k3s_url }} / k3s_installer_opts : {{ k3s_installer_opts }}"
+
+- name: "Run get.k3s.io on master node"
+  ansible.builtin.shell: "curl -sfL https://get.k3s.io | sh -s - {{ k3s_installer_opts }}"
+  # args:
+  #   creates: /etc/rancher/k3s/k3s.yaml
+  environment:
+    K3S_URL: "{{ k3s_url }}"
+    K3S_TOKEN: "{{ k3s_token }}"
+    INSTALL_K3S_CHANNEL: "{{ k3s_channel }}"

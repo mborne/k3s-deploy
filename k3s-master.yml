@@ -1,0 +1,9 @@
+---
+- name: Configure k3s-master node
+  hosts: k3s_master
+  become: true
+  roles:
+    - k3s
+  vars:
+    k3s_mode: server
+

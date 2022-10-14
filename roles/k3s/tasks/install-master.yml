@@ -1,0 +1,7 @@
+
+- name: "Run get.k3s.io if /etc/rancher/k3s/k3s.yaml does not exists"
+  ansible.builtin.shell: "curl -sfL https://get.k3s.io | sh -s - {{ k3s_installer_opts }}"
+  # args:
+  #   creates: /etc/rancher/k3s/k3s.yaml
+  environment:
+    INSTALL_K3S_CHANNEL: "{{ k3s_channel }}"
