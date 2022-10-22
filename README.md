@@ -1,6 +1,6 @@
 # k3s-deploy
 
-Deploy a [K3S](https://k3s.io/) DEV cluster with ansible.
+Deploy a [K3S](https://k3s.io/) DEV cluster with [Ansible](https://docs.ansible.com/ansible/latest/index.html).
 
 ## Requirements
 
@@ -19,9 +19,9 @@ See [roles/k3s/defaults/main.yml](roles/k3s/defaults/main.yml).
 
 ```bash
 # Deploy K3S with default params :
-ansible-playbook -i inventory k3s.yml
+ansible-playbook -i inventory/vagrantbox k3s.yml
 # Deploy K3S with a docker mirror :
-# ansible-playbook -i inventory k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
+# ansible-playbook -i inventory/vagrantbox k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
 ```
 
 ### Configure kubectl
@@ -34,10 +34,13 @@ export KUBECONFIG=$PWD/.k3s/k3s.yaml
 
 ### Check kubectl config
 
-```bash
-kubectl cluster-info
-kubectl get nodes -o wide
-```
+* `kubectl cluster-info` :
+
+![cluster-info](docs/img/screenshot-cluster-info.png)
+
+* `kubectl get nodes -o wide` :
+
+![get nodes](docs/img/screenshot-get-nodes.png)
 
 ## Have fun with kubernetes!
 
@@ -49,9 +52,9 @@ kubectl get nodes -o wide
 
 ```bash
 # uninstall k3s on agent nodes
-ansible -i inventory k3s_agent -m shell -a "k3s-agent-uninstall.sh" --become
+ansible -i inventory/vagrantbox k3s_agent -m shell -a "k3s-agent-uninstall.sh" --become
 # uninstall k3s on master node
-ansible -i inventory k3s_master -m shell -a "k3s-uninstall.sh" --become
+ansible -i inventory/vagrantbox k3s_master -m shell -a "k3s-uninstall.sh" --become
 ```
 
 ## License
