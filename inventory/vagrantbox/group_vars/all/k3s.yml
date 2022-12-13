@@ -1,1 +1,1 @@
-k3s_channel: 'stable'
+k3s_channel: 'v1.24'
