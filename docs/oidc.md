@@ -41,9 +41,11 @@ kubectl create clusterrolebinding oidc-cluster-admin --clusterrole=cluster-admin
 
 * [kubernetes.io - Authenticating - Configuring the API Server](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#configuring-the-api-server)
 
-> `--oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master
-> `--oidc-client-id=kubernetes`
-> `--oidc-groups-claim=group`
+```bash
+--oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master
+--oidc-client-id=kubernetes
+--oidc-groups-claim=group
+```
 
 * [docs.k3s.io - Customized Flags for Kubernetes Processes](https://docs.k3s.io/reference/server-config#customized-flags-for-kubernetes-processes)
 
