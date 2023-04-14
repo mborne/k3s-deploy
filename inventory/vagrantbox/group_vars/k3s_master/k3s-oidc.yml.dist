@@ -1,0 +1,6 @@
+k3s_extra_opts:
+- "--kube-apiserver-arg oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master"
+- "--kube-apiserver-arg oidc-client-id=kubernetes"
+- "--kube-apiserver-arg oidc-groups-claim=groups"
+- "--kube-apiserver-arg oidc-groups-prefix=oidc:"
+

@@ -5,11 +5,13 @@
 * Create a "kubernetes" client
 * Add "groups" property for this client "Client Scopes / kubernetes-dedicated" :
 
+![keycloak mappers](keycloak-mappers.png)
 ![keycloak group mapping](img/keycloak-group-mapping.png)
+![keycloak email verified mapping](img/keycloak-email-verified.png)
 
 ## Configure K3S to enable OIDC
 
-Add the following arguments to `k3s_installer_opts` in [inventory/vagrantbox/group_vars/k3s_master/k3s.yml](../inventory/vagrantbox/group_vars/k3s_master/k3s.yml) :
+See [inventory/vagrantbox/group_vars/k3s_master/k3s-oidc.yml.dist](../inventory/vagrantbox/group_vars/k3s_master/k3s-oidc.yml.dist) :
 
 ```bash
 --kube-apiserver-arg oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master
@@ -51,3 +53,21 @@ kubectl create clusterrolebinding oidc-cluster-admin --clusterrole=cluster-admin
 
 * [github.com - int128/kubelogin](https://github.com/int128/kubelogin)
 
+* Pour le debug, ajouter un `-v1` à l'utilisateur "oidc" dans KUBECONFIG :
+
+```yaml
+- name: oidc
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - oidc-login
+      - get-token
+      - --oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master
+      - --oidc-client-id=kubernetes
+      - --oidc-client-secret=7ZUUv5tsfWwkWTZLEMaZp6TlRsvcRtbO
+      - -v1
+      command: kubectl
+      env: null
+      provideClusterInfo: false
+```

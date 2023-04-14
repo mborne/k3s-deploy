@@ -8,6 +8,8 @@ k3s_installer_opts: ''
 # ex : 'v1.24'
 k3s_channel: 'stable'
 
+k3s_extra_opts: []
+
 # Allows to use a Docker Hub mirror
 # see https://docs.docker.com/registry/recipes/mirror/
 # ex : https://docker-mirror.quadtreeworld.net/ (IP filtered)
