@@ -17,8 +17,9 @@ See [inventory/vagrantbox/group_vars/k3s_master/k3s-oidc.yml.dist](../inventory/
 --kube-apiserver-arg oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master
 --kube-apiserver-arg oidc-client-id=kubernetes
 --kube-apiserver-arg oidc-groups-claim=groups
---kube-apiserver-arg oidc-groups-claim=groups
 --kube-apiserver-arg oidc-groups-prefix=oidc:
+--kube-apiserver-arg oidc-username-claim=email
+--kube-apiserver-arg oidc-username-prefix=oidc:
 ```
 
 ## Configure RBAC
@@ -31,10 +32,7 @@ kubectl create clusterrolebinding oidc-cluster-admin --clusterrole=cluster-admin
 
 # bind oidc:k8s_users group to "view" role
 kubectl create clusterrolebinding oidc-cluster-user --clusterrole=view --group='oidc:k8s_users'
-
 ```
-
-
 
 ## Configure kubectl
 
@@ -59,6 +57,7 @@ kubectl oidc-login setup \
 --oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master
 --oidc-client-id=kubernetes
 --oidc-groups-claim=groups
+# ...
 ```
 
 * [docs.k3s.io - Customized Flags for Kubernetes Processes](https://docs.k3s.io/reference/server-config#customized-flags-for-kubernetes-processes)
