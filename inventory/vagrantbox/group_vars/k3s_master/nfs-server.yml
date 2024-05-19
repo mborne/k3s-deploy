@@ -1,0 +1,2 @@
+# allows mount only from other VM
+nfs_host: 192.168.50.0/24

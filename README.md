@@ -15,13 +15,19 @@ See [roles/k3s/defaults/main.yml](roles/k3s/defaults/main.yml).
 
 ## Usage
 
+## Download external roles
+
+```bash
+ansible-galaxy install -r roles/requirements.yml
+```
+
 ### Deploy K3S
 
 ```bash
 # Deploy K3S with default params :
-ansible-playbook -i inventory/vagrantbox k3s.yml
+ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml
 # Deploy K3S with a docker mirror :
-# ansible-playbook -i inventory/vagrantbox k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
+# ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
 ```
 
 ### Configure kubectl
@@ -47,6 +53,7 @@ export KUBECONFIG=$PWD/.k3s/k3s.yaml
 * [kubernetes.io](https://kubernetes.io/)
 * [container.training](https://container.training/)
 * [mborne/docker-devbox](https://github.com/mborne/docker-devbox#readme)
+
 
 ## Uninstall K3S
 
