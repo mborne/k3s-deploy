@@ -1,6 +1,13 @@
 # k3s-deploy
 
-Deploy a [K3S](https://k3s.io/) DEV cluster with [Ansible](https://docs.ansible.com/ansible/latest/index.html).
+Deploy a [K3S](https://k3s.io/) multi-node cluster with [Ansible](https://docs.ansible.com/ansible/latest/index.html).
+
+## Motivation
+
+Installing a single node K3S cluster is trivial (`curl -sfL https://get.k3s.io | sh -`). This repository aims at providing :
+
+* A realistic multi-node cluster to illustrate monitoring and storage with Kubernetes (ReadWriteOnce, ReadWriteMany,...)
+* A discovery cluster for [mborne/cours-devbox](https://github.com/mborne/cours-devops#readme) where vagrant and Ansible are presented before Kubernetes.
 
 ## Requirements
 
@@ -81,6 +88,12 @@ ssh vagrant@vagrantbox-2 showmount -e vagrantbox-1
 ### Enabling OIDC on K3S
 
 See [docs/oidc.md - K3S - OIDC experimentation with Keycloak](docs/oidc.md)
+
+
+## Alternatives
+
+Using [Kubernetes in docker (Kind)](https://kind.sigs.k8s.io/docs/user/quick-start/) also allows to create a realistic multi-node cluster (see [mborne/docker-devbox - kind - quickstart.sh](https://github.com/mborne/docker-devbox/tree/master/kind#readme))
+
 
 ## License
 
