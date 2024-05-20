@@ -4,13 +4,13 @@
 ## Install K3S on master node
 
 ```bash
-ansible-playbook -i inventory k3s-master.yml
+ansible-playbook -i inventory/vagrantbox playbooks/k3s-master.yml
 ```
 
 ## Configure kubectl
 
 ```bash
-export KUBECONFIG=$PWD/.k3s/k3s.yaml
+export KUBECONFIG=$PWD/output/kubeconfig.yaml
 ```
 
 ## Check kubectl config
@@ -30,6 +30,6 @@ watch kubectl get nodes -o wide
 ## Install K3S on agent nodes
 
 ```bash
-ansible-playbook -i inventory k3s-agent.yml
+ansible-playbook -i inventory playbooks/k3s-agent.yml
 ```
 

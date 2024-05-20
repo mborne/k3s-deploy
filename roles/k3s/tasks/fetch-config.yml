@@ -1,24 +1,20 @@
 
-- name: "Fetch .k3s/k3s.yaml (KUBECONFIG) from /etc/rancher/k3s/k3s.yaml"
+- name: "Download output/kubeconfig.yml from /etc/rancher/k3s/k3s.yaml (KUBECONFIG)"
   fetch:
     src: /etc/rancher/k3s/k3s.yaml
-    dest: "{{ playbook_dir }}/.k3s/"
+    dest: "{{ k3s_output_dir }}/kubeconfig.yml"
     flat: yes
 
-- name: "Ansible replace string example"
+- name: "Replace 127.0.0.1 by {{ ansible_ssh_host }} in output/kubeconfig.yml"
   replace:
-    path: "{{ playbook_dir }}/.k3s/k3s.yaml"
+    path: "{{ k3s_output_dir }}/kubeconfig.yml"
     regexp: '127.0.0.1'
     replace: "{{ ansible_ssh_host }}"
   become: false
   delegate_to: localhost
 
-- name: "Fetch .k3s/node-token from /var/lib/rancher/k3s/server/node-token"
+- name: "Fetch output/node-token from /var/lib/rancher/k3s/server/node-token to allow joining from agent"
   fetch:
     src: /var/lib/rancher/k3s/server/node-token
-    dest: "{{ playbook_dir }}/.k3s/"
+    dest: "{{ k3s_output_dir }}/"
     flat: yes
-
-- name: "Show help to configure kubectl"
-  debug:
-    msg: "export KUBECONFIG={{ playbook_dir }}/.k3s/k3s.yaml"

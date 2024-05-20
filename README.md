@@ -15,22 +15,31 @@ See [roles/k3s/defaults/main.yml](roles/k3s/defaults/main.yml).
 
 ## Usage
 
+## Download external roles
+
+```bash
+ansible-galaxy install -r roles/requirements.yml
+```
+
 ### Deploy K3S
 
 ```bash
 # Deploy K3S with default params :
-ansible-playbook -i inventory/vagrantbox k3s.yml
+ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml
 # Deploy K3S with a docker mirror :
-# ansible-playbook -i inventory/vagrantbox k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
+# ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
 ```
 
 ### Configure kubectl
 
 ```bash
-export KUBECONFIG=$PWD/.k3s/k3s.yaml
+# In k3s-deploy directory :
+export KUBECONFIG=$PWD/output/kubeconfig.yml
+# List nodes
+kubectl get nodes
 ```
 
-(See [roles/k3s/tasks/fetch-config.yml](roles/k3s/tasks/fetch-config.yml))
+> See [roles/k3s/tasks/fetch-config.yml](roles/k3s/tasks/fetch-config.yml)
 
 ### Check kubectl config
 
@@ -48,6 +57,7 @@ export KUBECONFIG=$PWD/.k3s/k3s.yaml
 * [container.training](https://container.training/)
 * [mborne/docker-devbox](https://github.com/mborne/docker-devbox#readme)
 
+
 ## Uninstall K3S
 
 ```bash
@@ -56,6 +66,21 @@ ansible -i inventory/vagrantbox k3s_agent -m shell -a "k3s-agent-uninstall.sh" -
 # uninstall k3s on master node
 ansible -i inventory/vagrantbox k3s_master -m shell -a "k3s-uninstall.sh" --become
 ```
+
+## Advanced usage
+
+### Installing NFS server on master node
+
+```bash
+# Install NFS on vagrantbox-1
+ansible-playbook -i inventory/vagrantbox playbooks/nfs-server.yml
+# Check from vagrantbox-2
+ssh vagrant@vagrantbox-2 showmount -e vagrantbox-1
+```
+
+### Enabling OIDC on K3S
+
+See [docs/oidc.md - K3S - OIDC experimentation with Keycloak](docs/oidc.md)
 
 ## License
 

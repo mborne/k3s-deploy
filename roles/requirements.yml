@@ -1,0 +1,4 @@
+roles:
+- name: mborne.nfs-server
+  src: git+https://github.com/mborne/ansible-nfs-server.git
+  version: 'v0.1.0'

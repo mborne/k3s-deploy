@@ -1,0 +1,8 @@
+---
+- name: Install NFS server on master node
+  hosts: nfs_server
+  become: true
+  roles:
+    - mborne.nfs-server
+  vars:
+    k3s_mode: agent
