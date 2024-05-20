@@ -1,5 +1,8 @@
 ---
 
+- name: "Disable swap"
+  include_tasks: disable-swap.yml
+
 - name: "Install K3S requirements"
   include_tasks: install-requirements.yml
 
@@ -18,3 +21,9 @@
 - name: "Fetch K3S config from master node"
   include_tasks: fetch-config.yml
   when: k3s_mode == 'server'
+
+- name: "Show help to configure kubectl"
+  debug:
+    msg: "export KUBECONFIG={{ k3s_output_dir }}/kubeconfig.yml"
+  delegate_to: localhost
+  run_once: true

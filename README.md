@@ -33,10 +33,13 @@ ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml
 ### Configure kubectl
 
 ```bash
-export KUBECONFIG=$PWD/.k3s/k3s.yaml
+# In k3s-deploy directory :
+export KUBECONFIG=$PWD/output/kubeconfig.yml
+# List nodes
+kubectl get nodes
 ```
 
-(See [roles/k3s/tasks/fetch-config.yml](roles/k3s/tasks/fetch-config.yml))
+> See [roles/k3s/tasks/fetch-config.yml](roles/k3s/tasks/fetch-config.yml)
 
 ### Check kubectl config
 
@@ -63,6 +66,21 @@ ansible -i inventory/vagrantbox k3s_agent -m shell -a "k3s-agent-uninstall.sh" -
 # uninstall k3s on master node
 ansible -i inventory/vagrantbox k3s_master -m shell -a "k3s-uninstall.sh" --become
 ```
+
+## Advanced usage
+
+### Installing NFS server on master node
+
+```bash
+# Install NFS on vagrantbox-1
+ansible-playbook -i inventory/vagrantbox playbooks/nfs-server.yml
+# Check from vagrantbox-2
+ssh vagrant@vagrantbox-2 showmount -e vagrantbox-1
+```
+
+### Enabling OIDC on K3S
+
+See [docs/oidc.md - K3S - OIDC experimentation with Keycloak](docs/oidc.md)
 
 ## License
 

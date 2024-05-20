@@ -1,4 +1,4 @@
-# OIDC experimentation
+# K3S - OIDC authentification with Keycloak
 
 ## Configure keycloak
 
@@ -7,6 +7,9 @@
 
 ![keycloak mappers](img/keycloak-mappers.png)
 ![keycloak group mapping](img/keycloak-group-mapping.png)
+
+* Ensure email verified is available
+
 ![keycloak email verified mapping](img/keycloak-email-verified.png)
 
 ## Configure K3S to enable OIDC
@@ -57,7 +60,7 @@ kubectl oidc-login setup \
 --oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master
 --oidc-client-id=kubernetes
 --oidc-groups-claim=groups
-# ...
+# ...
 ```
 
 * [docs.k3s.io - Customized Flags for Kubernetes Processes](https://docs.k3s.io/reference/server-config#customized-flags-for-kubernetes-processes)

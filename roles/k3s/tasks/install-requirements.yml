@@ -8,19 +8,18 @@
   apt:
     name: [curl,jq]
     state: present
-    update_cache: yes
 
-- name: "Install nfs-common (longhorn requirement)"
+- name: "Install nfs-common (requirement for NFS volumes and longhorn)"
   apt:
     name: nfs-common
     state: present
 
-- name: "Install open-iscsi (longhorn requirement)"
+- name: "Install open-iscsi (requirement to deploy longhorn)"
   apt:
     name: open-iscsi
     state: present
 
-- name: Enable service iscsid and ensure it is started
+- name: "Enable service iscsid and ensure it is started (requirement to deploy longhorn)"
   ansible.builtin.systemd:
     name: iscsid
     enabled: yes
