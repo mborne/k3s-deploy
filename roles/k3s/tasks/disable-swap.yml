@@ -2,6 +2,15 @@
 # Disable swap as it is not supported (by default?) by kubelet
 #----------------------------------------------------------------------------------
 
+# Set vm.swappiness to 0 in /etc/sysctl.conf
+- name: Set swapiness to 0
+  sysctl:
+    name: vm.swappiness
+    value: '0'
+    state: present
+    sysctl_set: yes
+    reload: yes
+
 - name: Disable SWAP since kubernetes can't work with swap enabled (1/2)
   ansible.builtin.shell: |
     swapoff -a
