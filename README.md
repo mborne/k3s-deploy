@@ -109,8 +109,6 @@ Using [Kubernetes in docker (Kind)](https://kind.sigs.k8s.io/docs/user/quick-sta
   * [inventory/vagrantbox/group_vars/k3s_master/k3s.yml](inventory/vagrantbox/group_vars/k3s_master/k3s.yml)
   * [inventory/vagrantbox/group_vars/k3s_agent/k3s.yml](inventory/vagrantbox/group_vars/k3s_agent/k3s.yml)
 
-* Traefik is disabled (`--disable traefik`) as it is a good exercise to understand its deployment under kubernetes (see [mborne/docker-devbox - traefik](https://github.com/mborne/docker-devbox/tree/master/traefik#traefik))
-
 * `--flannel-iface=eth1` is important as `eth0` is NAT network created by vagrant (see [stackoverflow.com - Is there any way to bind K3s / flannel to another interface?](https://stackoverflow.com/questions/66449289/is-there-any-way-to-bind-k3s-flannel-to-another-interface/66495119#66495119))
 
 

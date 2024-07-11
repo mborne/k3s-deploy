@@ -8,9 +8,9 @@ k3s_output_dir: "{{ playbook_dir|dirname }}/output"
 k3s_url: ~
 k3s_token: ~
 
-# command line opts (ex : '--disable traefik --write-kubeconfig-mode 644')
+# command line opts (ex : '--disable traefik --write-kubeconfig-mode 644 --flannel-iface=enp0s8')
 k3s_installer_opts: ''
-# ex : 'v1.24'
+# ex : 'v1.28'
 k3s_channel: 'stable'
 
 k3s_extra_opts: []

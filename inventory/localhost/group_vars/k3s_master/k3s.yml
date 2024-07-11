@@ -1,1 +1,1 @@
-k3s_installer_opts: "--disable traefik"
+#k3s_installer_opts: "--disable traefik"
