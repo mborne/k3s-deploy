@@ -1,3 +1,0 @@
-# --disable-network-policy
-# --disable traefik
-k3s_installer_opts: "--write-kubeconfig-mode 644 --flannel-iface=enp0s8"

@@ -1,21 +1,39 @@
-# server or agent
+# Allows to switch between server or agent installation
 k3s_mode: server
+
+# Configure K8S version
+# ex : 'stable', 'v1.28', 'v1.29',...
+k3s_channel: 'v1.29'
 
 # output directory for kubeconfig.yml and node-token
 k3s_output_dir: "{{ playbook_dir|dirname }}/output"
+
+# IMPORTANT : Allows to configure --flannel-iface to use the good parent network :
+# - enp0s8 with VirtualBox and ubuntu/jammy64
+# - eth1 with KVM and generic/ubuntu2204
+k3s_flannel_iface: 'enp0s8'
 
 # required for agent
 k3s_url: ~
 k3s_token: ~
 
-# command line opts (ex : '--disable traefik --write-kubeconfig-mode 644 --flannel-iface=enp0s8')
-k3s_installer_opts: ''
-# ex : 'v1.28'
-k3s_channel: 'stable'
-
-k3s_extra_opts: []
-
-# Allows to use a Docker Hub mirror
+# Allows to configure the use of a Docker Hub mirror to avoid reaching pull limit
 # see https://docs.docker.com/registry/recipes/mirror/
 # ex : https://docker-mirror.quadtreeworld.net/ (IP filtered)
 k3s_docker_mirror: ~
+# https://docker-mirror.quadtreeworld.net/ #(IP filtered)
+
+# Allows to extra arguments for master and agent installation
+# (ex : '--disable traefik --write-kubeconfig-mode 644')
+k3s_installer_opts: ''
+
+# Allows to provide extra arguments such as OIDC for master installation
+k3s_master_extra_opts: []
+#k3s_master_extra_opts:
+#- "--kube-apiserver-arg oidc-issuer-url=https://keycloak.quadtreeworld.net/realms/master"
+#- "--kube-apiserver-arg oidc-client-id=kubernetes"
+#- "--kube-apiserver-arg oidc-groups-claim=groups"
+#- "--kube-apiserver-arg oidc-groups-prefix=oidc:"
+#- "--kube-apiserver-arg oidc-username-claim=email"
+#- "--kube-apiserver-arg oidc-username-prefix=oidc:"
+

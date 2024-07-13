@@ -33,8 +33,15 @@ ansible-galaxy install -r roles/requirements.yml
 ```bash
 # Deploy K3S with default params :
 ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml
-# Deploy K3S with a docker mirror :
-# ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
+
+# Deploy K3S using a proxy to reach DockerHub
+ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
+  -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
+
+# Deploy K3S with 
+ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
+  -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net \
+  -e k3s_flannel_iface=eth1 -e k3s_channel=v1.30
 ```
 
 ### Configure kubectl
@@ -98,19 +105,6 @@ Using [Kubernetes in docker (Kind)](https://kind.sigs.k8s.io/docs/user/quick-sta
 ## License
 
 [MIT](LICENSE)
-
-## Notes
-
-* Playbook is based on `curl -sfL https://get.k3s.io | sh -s -`.
-* Playbook **is not intented to be used for production**
-* Playbook is configured throw the following files :
-
-  * [inventory/vagrantbox/group_vars/all/k3s.yml](inventory/vagrantbox/group_vars/all/k3s.yml)
-  * [inventory/vagrantbox/group_vars/k3s_master/k3s.yml](inventory/vagrantbox/group_vars/k3s_master/k3s.yml)
-  * [inventory/vagrantbox/group_vars/k3s_agent/k3s.yml](inventory/vagrantbox/group_vars/k3s_agent/k3s.yml)
-
-* `--flannel-iface=eth1` is important as `eth0` is NAT network created by vagrant (see [stackoverflow.com - Is there any way to bind K3s / flannel to another interface?](https://stackoverflow.com/questions/66449289/is-there-any-way-to-bind-k3s-flannel-to-another-interface/66495119#66495119))
-
 
 
 

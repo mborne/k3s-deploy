@@ -10,6 +10,9 @@
   include_tasks: configure-registries.yml
   when: k3s_docker_mirror | default('', true) | trim != ''
 
+- name: "Handle options"
+  include_tasks: build-installer-opts.yml
+
 - name: "Install K3S as a master node"
   include_tasks: install-master.yml
   when: k3s_mode == 'server'
