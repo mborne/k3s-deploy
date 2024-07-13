@@ -29,11 +29,9 @@ See steps in [tasks/main.yml](tasks/main.yml) :
 * [tasks/disable-swap.yml](tasks/disable-swap.yml)
 * [tasks/install-requirements.yml](tasks/install-requirements.yml)
 * [tasks/configure-registries.yml](tasks/configure-registries.yml) generates `/etc/rancher/k3s/registries.yaml` using [templates/etc/rancher/k3s/registries.yaml.j2](templates/etc/rancher/k3s/registries.yaml.j2) to configure docker.io mirror at containerd level.
-* [tasks/build-installer-opts.yml](tasks/build-installer-opts.yml) converts ansible options in 
-
-curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
-
-
+* [tasks/build-installer-opts.yml](tasks/build-installer-opts.yml) converts ansible options into arguments for K3S install script
+* ...
+
 ## Ressources
 
 * [docs.k3s.io - Quick-Start Guide](https://docs.k3s.io/quick-start)
