@@ -82,20 +82,24 @@ See [roles/k3s/README.md](roles/k3s/README.md) :
 ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
   -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net \
   -e k3s_flannel_iface=eth1 \
-  -e k3s_channel=v1.30
+  -e k3s_channel=v1.30 \
+  -e k3s_traefik_enabled=false
 ```
 
 ### Installing NFS server on master node
 
+[playbooks/nfs-server.yml](playbooks/nfs-server.yml) allows the installation of an NFS server to experiment ReadWriteMany storage :
 
 ```bash
-# Download https://github.com/mborne/ansible-nfs-server role
+# Download https://github.com/mborne/ansible-nfs-server role :
 ansible-galaxy install -r roles/requirements.yml
 
-# Install NFS on vagrantbox-1
+# Install NFS on vagrantbox-1 :
 ansible-playbook -i inventory/vagrantbox playbooks/nfs-server.yml
 # Check from vagrantbox-2
-ssh vagrant@vagrantbox-2 showmount -e vagrantbox-1
+ssh vagrant@192.168.50.202 showmount -e vagrantbox-1
+#Export list for vagrantbox-1:
+#/var/nfs-data 192.168.50.0/24
 ```
 
 ### Enabling OIDC on K3S

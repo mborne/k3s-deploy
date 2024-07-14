@@ -2,6 +2,11 @@
   ansible.builtin.set_fact:
     k3s_installer_opts: "{{ k3s_installer_opts }} --flannel-iface={{ k3s_flannel_iface }}"
 
+- name: Handle k3s_traefik_enabled (server only)
+  ansible.builtin.set_fact:
+    k3s_installer_opts: "{{ k3s_installer_opts }} --disable traefik"
+  when: k3s_mode == 'server' and not k3s_traefik_enabled|bool
+
 - name: Display k3s_installer_opts
   debug:
     msg: "k3s_installer_opts: {{ k3s_installer_opts }}"

@@ -7,12 +7,12 @@ This ansible role allows to deploy a [K3S](https://k3s.io/) cluster with a singl
 See [defaults/main.yml](defaults/main.yml) :
 
 * `k3s_channel` allows to configure **K8S version** (ex : `"v1.29"`)
-
 * `k3s_docker_mirror` allows to **configure a proxy for DockerHub** (docker.io) at containerd level to avoid reaching pull limit.
-
 * `k3s_flannel_iface` allows to select the good parent network for [Flannel](https://docs.k3s.io/networking/basic-network-options) :
   * `"enp0s8"` with VirtualBox and ubuntu/jammy64
   * `"eth1"` with KVM and generic/ubuntu2204
+* `k3s_traefik_enabled` defaulted to `true` allows to disable traefik installation.
+
 
 ## How it works?
 
@@ -38,5 +38,7 @@ See steps in [tasks/main.yml](tasks/main.yml) :
 ## Ressources
 
 * [docs.k3s.io - Quick-Start Guide](https://docs.k3s.io/quick-start)
+* [docs.k3s.io - server](https://docs.k3s.io/cli/server)
+* [docs.k3s.io - agent](https://docs.k3s.io/cli/agent)
 * [stackoverflow.com - Is there any way to bind K3s / flannel to another interface?](https://stackoverflow.com/questions/66449289/is-there-any-way-to-bind-k3s-flannel-to-another-interface/66495119#66495119)
 
