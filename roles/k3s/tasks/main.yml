@@ -17,13 +17,17 @@
   include_tasks: install-master.yml
   when: k3s_mode == 'server'
 
+- name: "Fetch kubeconfig from master node"
+  include_tasks: fetch-kubeconfig.yml
+  when: k3s_mode == 'server'
+
+- name: "Fetch node-token from master node"
+  include_tasks: fetch-node-token.yml
+  when: k3s_mode == 'server'
+
 - name: "Install K3S as a agent node"
   include_tasks: install-agent.yml
   when: k3s_mode == 'agent'
-
-- name: "Fetch K3S config from master node"
-  include_tasks: fetch-config.yml
-  when: k3s_mode == 'server'
 
 - name: "Show help to configure kubectl"
   debug:

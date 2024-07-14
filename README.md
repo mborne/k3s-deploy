@@ -1,13 +1,13 @@
 # k3s-deploy
 
-Deploy a [K3S](https://k3s.io/) multi-node cluster with [Ansible](https://docs.ansible.com/ansible/latest/index.html).
+Deploy a [K3S](https://k3s.io/) cluster with [Ansible](https://docs.ansible.com/ansible/latest/index.html).
 
 ## Motivation
 
 Installing a single node K3S cluster is trivial (`curl -sfL https://get.k3s.io | sh -`). This repository aims at providing :
 
-* A realistic multi-node cluster to illustrate monitoring and storage with Kubernetes (ReadWriteOnce, ReadWriteMany,...)
 * A discovery cluster for [mborne/cours-devbox](https://github.com/mborne/cours-devops#readme) where vagrant and Ansible are presented before Kubernetes.
+* A realistic multi-node cluster to illustrate monitoring and storage with Kubernetes (ReadWriteOnce, ReadWriteMany,...)
 
 ## Requirements
 
@@ -22,26 +22,15 @@ See [roles/k3s/defaults/main.yml](roles/k3s/defaults/main.yml).
 
 ## Usage
 
-## Download external roles
-
-```bash
-ansible-galaxy install -r roles/requirements.yml
-```
-
 ### Deploy K3S
 
 ```bash
 # Deploy K3S with default params :
 ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml
 
-# Deploy K3S using a proxy to reach DockerHub
+# Deploy K3S using a DockerHub mirror
 ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
   -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
-
-# Deploy K3S with 
-ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
-  -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net \
-  -e k3s_flannel_iface=eth1 -e k3s_channel=v1.30
 ```
 
 ### Configure kubectl
@@ -71,7 +60,6 @@ kubectl get nodes
 * [container.training](https://container.training/)
 * [mborne/docker-devbox](https://github.com/mborne/docker-devbox#readme)
 
-
 ## Uninstall K3S
 
 ```bash
@@ -83,9 +71,27 @@ ansible -i inventory/vagrantbox k3s_master -m shell -a "k3s-uninstall.sh" --beco
 
 ## Advanced usage
 
-### Installing NFS server on master node
+### More install options...
+
+See [roles/k3s/README.md](roles/k3s/README.md) :
 
 ```bash
+# Deploying K3S with :
+# - custom parent network for flannel (eth1 with KVM and generic/ubuntu2204)
+# - custom kubernetes version
+ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
+  -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net \
+  -e k3s_flannel_iface=eth1 \
+  -e k3s_channel=v1.30
+```
+
+### Installing NFS server on master node
+
+
+```bash
+# Download https://github.com/mborne/ansible-nfs-server role
+ansible-galaxy install -r roles/requirements.yml
+
 # Install NFS on vagrantbox-1
 ansible-playbook -i inventory/vagrantbox playbooks/nfs-server.yml
 # Check from vagrantbox-2
@@ -94,13 +100,11 @@ ssh vagrant@vagrantbox-2 showmount -e vagrantbox-1
 
 ### Enabling OIDC on K3S
 
-See [docs/oidc.md - K3S - OIDC experimentation with Keycloak](docs/oidc.md)
-
+See sample config [inventory/vagrantbox/group_vars/k3s_master/k3s-oidc.yml.dist](inventory/vagrantbox/group_vars/k3s_master/k3s-oidc.yml.dist) and [docs/oidc.md - K3S - OIDC experimentation with Keycloak](docs/oidc.md)
 
 ## Alternatives
 
 Using [Kubernetes in docker (Kind)](https://kind.sigs.k8s.io/docs/user/quick-start/) also allows to create a realistic multi-node cluster (see [mborne/docker-devbox - kind - quickstart.sh](https://github.com/mborne/docker-devbox/tree/master/kind#readme))
-
 
 ## License
 
