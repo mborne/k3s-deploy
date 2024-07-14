@@ -1,13 +1,13 @@
 # k3s-deploy
 
-Deploy a [K3S](https://k3s.io/) multi-node cluster with [Ansible](https://docs.ansible.com/ansible/latest/index.html).
+Deploy a [K3S](https://k3s.io/) cluster with [Ansible](https://docs.ansible.com/ansible/latest/index.html).
 
 ## Motivation
 
 Installing a single node K3S cluster is trivial (`curl -sfL https://get.k3s.io | sh -`). This repository aims at providing :
 
-* A realistic multi-node cluster to illustrate monitoring and storage with Kubernetes (ReadWriteOnce, ReadWriteMany,...)
 * A discovery cluster for [mborne/cours-devbox](https://github.com/mborne/cours-devops#readme) where vagrant and Ansible are presented before Kubernetes.
+* A realistic multi-node cluster to illustrate monitoring and storage with Kubernetes (ReadWriteOnce, ReadWriteMany,...)
 
 ## Requirements
 
@@ -22,19 +22,15 @@ See [roles/k3s/defaults/main.yml](roles/k3s/defaults/main.yml).
 
 ## Usage
 
-## Download external roles
-
-```bash
-ansible-galaxy install -r roles/requirements.yml
-```
-
 ### Deploy K3S
 
 ```bash
 # Deploy K3S with default params :
 ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml
-# Deploy K3S with a docker mirror :
-# ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
+
+# Deploy K3S using a DockerHub mirror
+ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
+  -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net
 ```
 
 ### Configure kubectl
@@ -64,7 +60,6 @@ kubectl get nodes
 * [container.training](https://container.training/)
 * [mborne/docker-devbox](https://github.com/mborne/docker-devbox#readme)
 
-
 ## Uninstall K3S
 
 ```bash
@@ -76,41 +71,48 @@ ansible -i inventory/vagrantbox k3s_master -m shell -a "k3s-uninstall.sh" --beco
 
 ## Advanced usage
 
-### Installing NFS server on master node
+### More install options...
+
+See [roles/k3s/README.md](roles/k3s/README.md) :
 
 ```bash
-# Install NFS on vagrantbox-1
+# Deploying K3S with :
+# - custom parent network for flannel (eth1 with KVM and generic/ubuntu2204)
+# - custom kubernetes version
+ansible-playbook -i inventory/vagrantbox playbooks/k3s.yml \
+  -e k3s_docker_mirror=https://docker-mirror.quadtreeworld.net \
+  -e k3s_flannel_iface=eth1 \
+  -e k3s_channel=v1.30 \
+  -e k3s_traefik_enabled=false
+```
+
+### Installing NFS server on master node
+
+[playbooks/nfs-server.yml](playbooks/nfs-server.yml) allows the installation of an NFS server to experiment ReadWriteMany storage :
+
+```bash
+# Download https://github.com/mborne/ansible-nfs-server role :
+ansible-galaxy install -r roles/requirements.yml
+
+# Install NFS on vagrantbox-1 :
 ansible-playbook -i inventory/vagrantbox playbooks/nfs-server.yml
 # Check from vagrantbox-2
-ssh vagrant@vagrantbox-2 showmount -e vagrantbox-1
+ssh vagrant@192.168.50.202 showmount -e vagrantbox-1
+#Export list for vagrantbox-1:
+#/var/nfs-data 192.168.50.0/24
 ```
 
 ### Enabling OIDC on K3S
 
-See [docs/oidc.md - K3S - OIDC experimentation with Keycloak](docs/oidc.md)
-
+See sample config [inventory/vagrantbox/group_vars/k3s_master/k3s-oidc.yml.dist](inventory/vagrantbox/group_vars/k3s_master/k3s-oidc.yml.dist) and [docs/oidc.md - K3S - OIDC experimentation with Keycloak](docs/oidc.md)
 
 ## Alternatives
 
 Using [Kubernetes in docker (Kind)](https://kind.sigs.k8s.io/docs/user/quick-start/) also allows to create a realistic multi-node cluster (see [mborne/docker-devbox - kind - quickstart.sh](https://github.com/mborne/docker-devbox/tree/master/kind#readme))
 
-
 ## License
 
 [MIT](LICENSE)
-
-## Notes
-
-* Playbook is based on `curl -sfL https://get.k3s.io | sh -s -`.
-* Playbook **is not intented to be used for production**
-* Playbook is configured throw the following files :
-
-  * [inventory/vagrantbox/group_vars/all/k3s.yml](inventory/vagrantbox/group_vars/all/k3s.yml)
-  * [inventory/vagrantbox/group_vars/k3s_master/k3s.yml](inventory/vagrantbox/group_vars/k3s_master/k3s.yml)
-  * [inventory/vagrantbox/group_vars/k3s_agent/k3s.yml](inventory/vagrantbox/group_vars/k3s_agent/k3s.yml)
-
-* `--flannel-iface=eth1` is important as `eth0` is NAT network created by vagrant (see [stackoverflow.com - Is there any way to bind K3s / flannel to another interface?](https://stackoverflow.com/questions/66449289/is-there-any-way-to-bind-k3s-flannel-to-another-interface/66495119#66495119))
-
 
 
 
